@@ -1,4 +1,44 @@
+"use client"
+import { motion } from "framer-motion"
+import { useState } from "react"
 export default function Home() {
+  
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const handleSubmit = async (e: any) => {
+  e.preventDefault()
+
+  setLoading(true)
+  setSuccess(false)
+
+  const formData = new FormData(e.target)
+
+  const data = {
+    name: formData.get("name"),
+    email: formData.get("email"),
+    phone: formData.get("phone"),
+    type: formData.get("type"),
+    message: formData.get("message"),
+  }
+
+  try {
+    await fetch("/api/telegram", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+
+    setSuccess(true)
+
+    e.target.reset()
+  } catch (error) {
+    alert("Ошибка при отправке")
+  }
+
+  setLoading(false)
+}
   return (
     <main className="min-h-screen bg-[#f7f3eb] overflow-hidden">
 
@@ -15,13 +55,18 @@ export default function Home() {
           <a href="#">Контакты</a>
         </nav>
 
-        <button className="bg-[#2d4a3a] text-white px-6 py-3 rounded-full text-sm hover:opacity-90 transition">
-          Записаться
-        </button>
+<a
+  href="#contact"
+  className="bg-[#2d4a3a] text-white px-6 py-3 rounded-full"
+>
+  Записаться
+</a>
       </header>
 
       {/* HERO */}
-      <section className="relative flex flex-col items-center justify-center text-center px-6 py-20 overflow-hidden">
+      <motion.section initial={{ opacity: 0, y: 40 }}
+animate={{ opacity: 1, y: 0 }}
+transition={{ duration: 2 }} className="relative flex flex-col items-center justify-center text-center px-6 py-20 overflow-hidden">
 
         {/* MAIN GLOW */}
         <div className="absolute w-[800px] h-[800px] bg-[#e7dcc8] rounded-full blur-3xl opacity-60 top-10"></div>
@@ -73,9 +118,9 @@ export default function Home() {
             className="w-[340px] md:w-[520px] mx-auto"
           />
         </div>
-      </section>
+      </motion.section>
       {/* CONSULTATION TYPES SECTION */}
-<section className="relative px-6 md:px-16 py-32 bg-[#f7f3eb] overflow-hidden">
+<section className="relative px-6 md:px-16 py-15 bg-[#f7f3eb] overflow-hidden">
 
   {/* BIG GLOW */}
   <div className="absolute top-10 left-[20%] w-[500px] h-[500px] bg-[#ece3d3] rounded-full blur-3xl opacity-60"></div>
@@ -106,7 +151,10 @@ export default function Home() {
   <div className="absolute bottom-[220px] right-[8%] text-[#d4c29f] text-4xl">✦</div>
 
   {/* HEADER */}
-  <div className="relative z-10 text-center max-w-5xl mx-auto">
+  <motion.div initial={{ opacity: 0, y: 30 }}
+whileInView={{ opacity: 1, y: 0 }}
+transition={{ duration: 0.8 }}
+viewport={{ once: true }} className="relative z-10 text-center max-w-5xl mx-auto">
 
     <p className="tracking-[0.45em] uppercase text-sm text-[#9d957f] mb-8">
       ВИДЫ КОНСУЛЬТАЦИЙ
@@ -123,10 +171,10 @@ export default function Home() {
       который поможет вам обрести
       внутреннюю гармонию и развитие.
     </p>
-  </div>
+  </motion.div>
 
   {/* CARDS */}
-  <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-8 mt-24">
+  <div  className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-8 mt-24">
 
     {/* CARD 1 */}
     <div className="bg-[#f9f5ee] border border-white/50 rounded-[40px] p-10 shadow-[0_10px_40px_rgba(0,0,0,0.04)] backdrop-blur-md">
@@ -155,10 +203,23 @@ export default function Home() {
 
       <div className="mt-12 flex flex-col items-center">
 
-        <button className="text-[#2d4a3a] text-xl font-medium flex items-center gap-3 hover:gap-5 transition-all duration-300">
-          Выбрать
-          <span>→</span>
-        </button>
+<motion.button
+  onClick={() => {
+    document.getElementById("contact")?.scrollIntoView({
+      behavior: "smooth",
+    })
+  }}
+  whileTap={{ scale: 0.98 }}
+  whileHover={{ scale: 1.03, y: -2 }}
+  transition={{ duration: 0.2 }}
+  className="text-[#2d4a3a] text-xl font-medium"
+>
+
+  Выбрать
+
+  <span>→</span>
+
+</motion.button>
 
         <div className="flex items-center gap-3 mt-4 opacity-70">
           <div className="w-16 h-[1px] bg-[#d8c6a4]"></div>
@@ -200,10 +261,23 @@ export default function Home() {
 
       <div className="mt-12 flex flex-col items-center">
 
-        <button className="text-[#2d4a3a] text-xl font-medium flex items-center gap-3 hover:gap-5 transition-all duration-300">
-          Выбрать
-          <span>→</span>
-        </button>
+<motion.button
+  onClick={() => {
+    document.getElementById("contact")?.scrollIntoView({
+      behavior: "smooth",
+    })
+  }}
+  whileTap={{ scale: 0.98 }}
+  whileHover={{ scale: 1.03, y: -2 }}
+  transition={{ duration: 0.2 }}
+  className="text-[#2d4a3a] text-xl font-medium"
+>
+
+  Выбрать
+
+  <span>→</span>
+
+</motion.button>
 
         <div className="flex items-center gap-3 mt-4 opacity-70">
           <div className="w-16 h-[1px] bg-[#d8c6a4]"></div>
@@ -245,10 +319,23 @@ export default function Home() {
 
       <div className="mt-12 flex flex-col items-center">
 
-        <button className="text-[#2d4a3a] text-xl font-medium flex items-center gap-3 hover:gap-5 transition-all duration-300">
-          Выбрать
-          <span>→</span>
-        </button>
+<motion.button
+  onClick={() => {
+    document.getElementById("contact")?.scrollIntoView({
+      behavior: "smooth",
+    })
+  }}
+  whileTap={{ scale: 0.98 }}
+  whileHover={{ scale: 1.03, y: -2 }}
+  transition={{ duration: 0.2 }}
+  className="text-[#2d4a3a] text-xl font-medium"
+>
+
+  Выбрать
+
+  <span>→</span>
+
+</motion.button>
 
         <div className="flex items-center gap-3 mt-4 opacity-70">
           <div className="w-16 h-[1px] bg-[#d8c6a4]"></div>
@@ -267,7 +354,10 @@ export default function Home() {
 
 {/* ABOUT SECTION MOBILE */}
 
-<section className="relative overflow-hidden bg-gradient-to-b from-[#aebd9f] via-[#cfd9c3] to-[#edf1e7] px-6 pt-8 pb-24">
+<motion.section initial={{ opacity: 0, y: 30 }}
+whileInView={{ opacity: 1, y: 0 }}
+transition={{ duration: 0.8 }}
+viewport={{ once: true }} className="relative overflow-hidden bg-gradient-to-b from-[#aebd9f] via-[#cfd9c3] to-[#edf1e7] px-6 pt-8 pb-24">
 
   {/* TOP CURVE */}
   <div className="absolute top-0 left-0 w-full h-32 bg-[#f7f3eb] rounded-b-[120px]"></div>
@@ -404,7 +494,7 @@ export default function Home() {
       {/* EDUCATION */}
       <div>
 
-        <div className="flex items-center gap-4 mb-6">
+        <div className="flex items-center gap-3 mb-6">
 
           <h3 className="text-[#4f5f45] text-[38px] leading-none font-serif">
             Образование
@@ -514,7 +604,7 @@ export default function Home() {
     </div>
 
   </div>
-</section>
+</motion.section>
 <section className="relative overflow-hidden bg-[#f6f2ea] px-5 py-20">
 
   {/* верхняя волна закрытия прошлой секции */}
@@ -552,7 +642,10 @@ export default function Home() {
   </div>
 
   {/* контейнер */}
-  <div className="relative z-10 mx-auto max-w-[420px] rounded-[36px] border border-white/50 bg-[#fffdf9]/95 p-6 shadow-[0_10px_40px_rgba(0,0,0,0.05)] backdrop-blur-sm">
+  <motion.div initial={{ opacity: 0, y: 30 }}
+whileInView={{ opacity: 1, y: 0 }}
+transition={{ duration: 0.8 }}
+viewport={{ once: true }}  className="relative z-10 mx-auto max-w-[420px] rounded-[36px] border border-white/50 bg-[#fffdf9]/95 p-6 shadow-[0_10px_40px_rgba(0,0,0,0.05)] backdrop-blur-sm">
 
     {/* title */}
     <div className="mb-8 text-center">
@@ -575,15 +668,18 @@ export default function Home() {
     </div>
 
     {/* form */}
+    
     <div className="space-y-5">
-
+    <form id="contact" onSubmit={handleSubmit}>
       <div>
         <label className="mb-2 block text-sm text-[#4a4a4a]">
           Ваше имя
         </label>
 
         <input
+         required 
           type="text"
+          name="name"
           placeholder="Dildora Alimova"
           className="w-full rounded-2xl border border-[#ece8df] bg-[#fffdf9] px-5 py-4 text-sm text-[#3e3e3e] placeholder:text-[#8c8c8c] outline-none transition focus:border-[#7f9370]"
         />
@@ -595,7 +691,9 @@ export default function Home() {
         </label>
 
         <input
+         required 
           type="email"
+          name="email"
           placeholder="dildora@example.com"
           className="w-full rounded-2xl border border-[#ece8df] bg-[#fffdf9] px-5 py-4 text-sm text-[#3e3e3e] placeholder:text-[#8c8c8c] outline-none transition focus:border-[#7f9370]"
         />
@@ -607,7 +705,9 @@ export default function Home() {
         </label>
 
         <input
-          type="text"
+        required         
+        type="text"
+          name="phone"
           placeholder="+998 94 123-45-67"
           className="w-full rounded-2xl border border-[#ece8df] bg-[#fffdf9] px-5 py-4 text-sm text-[#3e3e3e] placeholder:text-[#8c8c8c] outline-none transition focus:border-[#7f9370]"
         />
@@ -618,7 +718,7 @@ export default function Home() {
           Тип консультации
         </label>
 
-        <select className="w-full rounded-2xl border border-[#ece8df] bg-[#fffdf9] px-5 py-4 text-sm text-[#3e3e3e] outline-none">
+        <select name="type" className="w-full rounded-2xl border border-[#ece8df] bg-[#fffdf9] px-5 py-4 text-sm text-[#3e3e3e] outline-none"  required >
 
           <option>Выберите тип консультации</option>
           <option>Индивидуальная</option>
@@ -634,21 +734,30 @@ export default function Home() {
         </label>
 
         <textarea
+          name="message"
           placeholder="Кратко опишите, что привело вас сюда..."
           className="min-h-[140px] w-full rounded-2xl border border-[#ece8df] bg-[#fffdf9] px-5 py-4 text-sm text-[#3e3e3e] placeholder:text-[#8c8c8c] outline-none transition focus:border-[#7f9370]"
         />
       </div>
 
       {/* button */}
-      <button className="mt-3 flex w-full items-center justify-center gap-3 rounded-full bg-gradient-to-r from-[#5f7f56] to-[#7e9b73] px-6 py-4 text-sm font-medium text-white shadow-lg transition hover:scale-[1.01]">
+      <motion.button whileHover={{ scale: 1.03, y: -2 }}
+whileTap={{ scale: 0.98 }}
+transition={{ duration: 0.2 }} type="submit" disabled ={loading} className="unded-fulmt-3 flex w-full items-center justify-center gap-3 rol bg-gradient-to-r from-[#5f7f56] to-[#7e9b73] px-6 py-4 text-sm font-medium text-white shadow-lg transition hover:scale-[1.01] rounded-full">
 
-        Отправить заявку
+      {loading ? "Отправка..." : " Отправить заявку"}
 
         <span className="text-[#efe6b7]">
           ✦
         </span>
 
-      </button>
+      </motion.button>
+      {success && (
+  <p className="mt-4 text-center text-green-700">
+    Спасибо! Ваша заявка отправлена ✨
+  </p>
+)}
+      </form>
 
       <p className="mt-4 text-center text-[12px] leading-relaxed text-[#9b9b9b]">
         Ваши данные в безопасности и не будут
@@ -657,9 +766,12 @@ export default function Home() {
 
     </div>
 
-  </div>
+  </motion.div>
   
-<section className="relative overflow-hidden bg-[#f6f2ea] px-4 py-10 md:px-8">
+<motion.section initial={{ opacity: 0, y: 30 }}
+whileInView={{ opacity: 1, y: 0 }}
+transition={{ duration: 0.8 }}
+viewport={{ once: true }} className="relative overflow-hidden bg-[#f6f2ea] px-4 py-10 md:px-8">
   {/* декор */}
   <div className="absolute left-5 top-24 text-[#d7c68d]/60 text-lg">
     ✦
@@ -759,9 +871,26 @@ export default function Home() {
       </div>
 
       {/* кнопка */}
-      <button className="mt-7 rounded-full bg-gradient-to-r from-[#5f7f56] to-[#7e9b73] px-6 py-3 text-[13px] font-medium text-white shadow-md transition hover:scale-[1.02]">
-        Записаться ✦
-      </button>
+
+      <div className="mt-5 flex flex-wrap items-center gap-3">
+
+  <a
+    href="https://t.me/Dilya6006"
+    target="_blank"
+    className="rounded-full border border-[#d7c68d] px-4 py-2 text-[13px] text-[#476243] transition hover:bg-[#edf1e7]"
+  >
+    Telegram
+  </a>
+
+  <a
+    href="https://instagram.com/dilorom_alimova"
+    target="_blank"
+    className="rounded-full border border-[#d7c68d] px-4 py-2 text-[13px] text-[#476243] transition hover:bg-[#edf1e7]"
+  >
+    Instagram
+  </a>
+
+</div>
 
     </div>
 
@@ -800,9 +929,12 @@ export default function Home() {
 
   </div>
 
-</section>
+</motion.section>
   {/* FOOTER */}
-  <footer className="mx-auto mt-14 max-w-5xl border-t border-[#d9d2c5] pt-10">
+  <motion.footer initial={{ opacity: 0, y: 30 }}
+whileInView={{ opacity: 1, y: 0 }}
+transition={{ duration: 0.8 }}
+viewport={{ once: true }} className="mx-auto mt-14 max-w-5xl border-t border-[#d9d2c5] pt-10">
 
     <div className="grid gap-10 md:grid-cols-3">
 
@@ -838,7 +970,7 @@ export default function Home() {
         </p>
 
         <p className="flex items-center gap-3">
-          📞 +998 90 123 45 67
+          📞 +998 90 3176006
         </p>
 
         <p className="flex items-center gap-3">
@@ -850,19 +982,12 @@ export default function Home() {
       {/* right */}
       <div className="space-y-4 text-[14px] text-[#5f5f5f]">
 
-        <a
-          href="#"
-          className="flex items-center gap-3 transition hover:text-[#476243]"
-        >
-          📷 @dilorom.psychologist
-        </a>
-
-        <a
-          href="#"
-          className="flex items-center gap-3 transition hover:text-[#476243]"
-        >
-          ✈️ t.me/dilorom_psy
-        </a>
+<a href="https://t.me/Dilya6006" target="_blank" className="flex items-center gap-3 transition hover:text-[#476243]">
+  Telegram
+</a>
+        <a href="https://www.instagram.com/dilorom__alimova?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" className="flex items-center gap-3 transition hover:text-[#476243]">
+  Instagram
+</a>
 
       </div>
 
@@ -885,7 +1010,7 @@ export default function Home() {
 
     </div>
 
-  </footer>
+  </motion.footer>
 
 </section>
     </main>
